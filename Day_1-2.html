@@ -219,7 +219,7 @@
 
                     <!-- Question Text -->
                 <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <p class="text-lg leading-relaxed">
+                <p class="text-lg leading-relaxed" style="font-size: x-large;">
                 ${this.renderQuestion(q)}
                 </p>
                 </div>
@@ -235,8 +235,8 @@
                                                 ${selectedAnswer === option
                     ? 'border-blue-500 bg-blue-50 text-blue-700 font-semibold'
                     : 'border-gray-300 bg-white hover:border-blue-300 hover:bg-gray-50'}">
-                                            <span class="text-lg font-medium mr-2">${labels[index]}</span>
-                                            <span class="flex-1">${option}</span>
+                                            <span class="text-lg mr-2" style="font-size: x-large;">${labels[index]}</span>
+                                            <span class="flex-1" style="font-size: x-large;">${option}</span>
                                         </button>
                                     `}).join('')}
                 </div>
