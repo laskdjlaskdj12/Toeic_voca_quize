@@ -1,10 +1,337 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 단어 퀴즈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
+<div id="app"></div>
 
+<script type="module">
+    // Quiz data from PDF
+    const quizData = [
+        {
+            question: "Fax your ( ) and cover letter to the above number.",
+            options: ["resume", "openings", "applicants", "requirement"],
+            answer: "resume"
+        },
+        {
+            question: "There are several job ( ) at the restaurant right now.",
+            options: ["resume", "openings", "applicants", "requirement"],
+            answer: "openings"
+        },
+        {
+            question: "( ) are required to submit a resume.",
+            options: ["resume", "openings", "applicants", "requirement"],
+            answer: "applicants"
+        },
+        {
+            question: "A driver's license is a ( ) of this job.",
+            options: ["resume", "openings", "applicants", "requirement"],
+            answer: "requirement"
+        },
+        {
+            question: "Applicants must ( ) all the requirements for the job.",
+            options: ["meet", "qualified", "candidates", "confidence"],
+            answer: "meet"
+        },
+        {
+            question: "People with master's degrees are ( ) for the research position.",
+            options: ["meet", "qualified", "candidates", "confidence"],
+            answer: "qualified"
+        },
+        {
+            question: "Five ( ) will be selected for final interviews.",
+            options: ["meet", "qualified", "candidates", "confidence"],
+            answer: "candidates"
+        },
+        {
+            question: "We have ( ) that she can handle the position.",
+            options: ["meet", "qualified", "candidates", "confidence"],
+            answer: "confidence"
+        },
+        {
+            question: "Mr. Monroe's experience makes him ( ) qualified for the job.",
+            options: ["highly", "professional", "interviews", "hire"],
+            answer: "highly"
+        },
+        {
+            question: "Jeff is known as a ( ) photographer.",
+            options: ["highly", "professional", "interviews", "hire"],
+            answer: "professional"
+        },
+        {
+            question: "The ( ) are being held in meeting room three.",
+            options: ["highly", "professional", "interviews", "hire"],
+            answer: "interviews"
+        },
+        {
+            question: "The company expects to ( ) several new employees next month.",
+            options: ["highly", "professional", "interviews", "hire"],
+            answer: "hire"
+        },
+        {
+            question: "This company offers on-the-job ( ) for new staff.",
+            options: ["training", "reference", "position", "positioned"],
+            answer: "training"
+        },
+        {
+            question: "Philip asked his previous employer to write a ( ) letter for him.",
+            options: ["training", "reference", "position", "positioned"],
+            answer: "reference"
+        },
+        {
+            question: "The ( ) provides health care and other benefits.",
+            options: ["training", "reference", "position", "positioned"],
+            answer: "position"
+        },
+        {
+            question: "List all of your ( ) from previous jobs on your resume.",
+            options: ["achievements", "impressed", "excellent", "eligible"],
+            answer: "achievements"
+        },
+        {
+            question: "The CEO was ( ) by his assistant's organizing skills.",
+            options: ["achievements", "impressed", "excellent", "eligible"],
+            answer: "impressed"
+        },
+        {
+            question: "Because of her ( ) managerial skills, Erin was hired for the job.",
+            options: ["achievements", "impressed", "excellent", "eligible"],
+            answer: "excellent"
+        },
+        {
+            question: "The part-time workers are also ( ) for paid holidays.",
+            options: ["achievements", "impressed", "excellent", "eligible"],
+            answer: "eligible"
+        },
+        {
+            question: "Staff members wear uniforms so that they are easy for customers to ( ).",
+            options: ["achievements", "impressed", "excellent", "eligible", "identify"],
+            answer: "identify"
+        }
+    ];
+
+    class QuizApp {
+        constructor() {
+            this.currentQuestion = 0;
+            this.userAnswers = new Array(quizData.length).fill(null);
+            this.stage = 'quiz'; // 'quiz' or 'result'
+            this.render();
+        }
+
+        selectAnswer(optionIndex) {
+            this.userAnswers[this.currentQuestion] = quizData[this.currentQuestion].options[optionIndex];
+            this.render();
+        }
+
+        previousQuestion() {
+            if (this.currentQuestion > 0) {
+                this.currentQuestion--;
+                this.render();
+            }
+        }
+
+        nextQuestion() {
+            if (this.currentQuestion < quizData.length - 1) {
+                this.currentQuestion++;
+                this.render();
+            }
+        }
+
+        showGradingConfirm() {
+            this.renderGradingModal();
+        }
+
+        grade() {
+            this.stage = 'result';
+            this.render();
+        }
+
+        getScore() {
+            let correct = 0;
+            quizData.forEach((q, i) => {
+                if (this.userAnswers[i] === q.answer) {
+                    correct++;
+                }
+            });
+            return correct;
+        }
+
+        getWrongQuestions() {
+            const wrong = [];
+            quizData.forEach((q, i) => {
+                if (this.userAnswers[i] !== q.answer) {
+                    wrong.push({
+                        question: q.question,
+                        userAnswer: this.userAnswers[i] || '(답안 없음)',
+                        correctAnswer: q.answer,
+                        index: i
+                    });
+                }
+            });
+            return wrong;
+        }
+
+        renderQuestion(q) {
+            const answer = q.answer;
+            const blankWidth = answer.length * 0.6 + 2; // Approximate width in rem
+            return q.question.replace('( )', `<span class="inline-block mx-1" style="width: ${blankWidth}rem; border-bottom: 2px solid #333;">&nbsp;</span>`);
+        }
+
+        renderGradingModal() {
+            const modalHTML = `
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+                            <p class="text-lg text-center mb-4">채점을 하시겠습니까?</p>
+                            <div class="flex gap-3">
+                                <button onclick="app.render()" class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">취소</button>
+                                <button onclick="app.grade()" class="flex-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">확인</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            document.getElementById('app').insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        render() {
+            const app = document.getElementById('app');
+
+            if (this.stage === 'quiz') {
+                const q = quizData[this.currentQuestion];
+                const isLastQuestion = this.currentQuestion === quizData.length - 1;
+                const selectedAnswer = this.userAnswers[this.currentQuestion];
+
+                app.innerHTML = `
+                        <div class="min-h-screen p-4 pb-24">
+                            <div class="max-w-2xl mx-auto">
+                                <!-- Question Number -->
+                <div class="text-center mb-4 text-gray-600">
+                ${this.currentQuestion + 1} / ${quizData.length}
+                </div>
+
+                    <!-- Question Text -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <p class="text-lg leading-relaxed">
+                ${this.renderQuestion(q)}
+                </p>
+                </div>
+
+                    <!-- Options -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                ${q.options.map((option, index) => {
+                const labels = ['ⓐ', 'ⓑ', 'ⓒ', 'ⓓ', 'ⓔ'];
+                return `
+                                        <button
+                                            onclick="app.selectAnswer(${index})"
+                                            class="px-4 py-3 rounded-lg border-2 transition-all break-words text-left flex items-center
+                                                ${selectedAnswer === option
+                    ? 'border-blue-500 bg-blue-50 text-blue-700 font-semibold'
+                    : 'border-gray-300 bg-white hover:border-blue-300 hover:bg-gray-50'}">
+                                            <span class="text-lg font-medium mr-2">${labels[index]}</span>
+                                            <span class="flex-1">${option}</span>
+                                        </button>
+                                    `}).join('')}
+                </div>
+                </div>
+
+                    <!-- Navigation Buttons -->
+                <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
+                <div class="max-w-2xl mx-auto flex gap-3">
+                <button
+                onclick="app.previousQuestion()"
+                ${this.currentQuestion === 0 ? 'disabled' : ''}
+                class="flex-1 px-6 py-3 rounded-lg font-semibold
+                                            ${this.currentQuestion === 0
+                                                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'}">
+                이전
+                </button>
+                <button
+                onclick="${isLastQuestion ? 'app.showGradingConfirm()' : 'app.nextQuestion()'}"
+                class="flex-1 px-6 py-3 rounded-lg font-semibold
+                                            ${isLastQuestion
+                                                ? 'bg-red-500 text-white hover:bg-red-600'
+                                                : 'bg-blue-500 text-white hover:bg-blue-600'}">
+                ${isLastQuestion ? '채점하기' : '다음'}
+                </button>
+                </div>
+                </div>
+                </div>
+                `;
+                } else {
+                    // Result stage
+                    const score = this.getScore();
+                    const wrongQuestions = this.getWrongQuestions();
+
+                    app.innerHTML = `
+                <div class="min-h-screen p-4">
+                <div class="max-w-2xl mx-auto">
+                    <!-- Score -->
+                <div class="text-center mb-8 py-8 bg-white rounded-lg shadow-md">
+                <h2 class="text-4xl font-bold text-gray-800">
+                ${score} / ${quizData.length}
+                </h2>
+                <p class="text-gray-600 mt-2">정답 개수</p>
+                </div>
+
+                    <!-- Wrong Questions -->
+                ${wrongQuestions.length > 0 ? `
+                                    <div class="bg-white rounded-lg shadow-md p-6">
+                                        <h3 class="text-xl font-bold mb-4 text-gray-800">틀린 문제</h3>
+                                        ${wrongQuestions.map(w => {
+                    const blankWidth = w.correctAnswer.length * 0.6 + 2;
+                    const questionWithBlank = w.question.replace('( )', `<span class="inline-block mx-1" style="width: ${blankWidth}rem; border-bottom: 2px solid #333;">&nbsp;</span>`);
+                    return `
+                                            <div class="mb-6 pb-6 border-b last:border-b-0">
+                                                <p class="text-gray-700 mb-3 leading-relaxed">
+                                                    <span class="font-semibold text-blue-600 mr-2">${w.index + 1}.</span>${questionWithBlank}
+                                                </p>
+                                                <div class="space-y-2">
+                                                    <p>
+                                                        <span class="text-gray-600">선택한 답:</span>
+                                                        <span class="font-bold text-red-500 ml-2">${w.userAnswer}</span>
+                                                    </p>
+                                                    <p>
+                                                        <span class="text-gray-600">정답:</span>
+                                                        <span class="font-bold text-green-500 ml-2">${w.correctAnswer}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        `}).join('')}
+                                    </div>
+                                ` : `
+                                    <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                                        <p class="text-2xl font-bold text-green-500">🎉 완벽합니다!</p>
+                                        <p class="text-gray-600 mt-2">모든 문제를 맞히셨습니다.</p>
+                                    </div>
+                                `}
+
+                    <!-- Restart Button -->
+                <div class="mt-6">
+                <button
+                onclick="location.reload()"
+                class="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600">
+                다시 풀기
+                </button>
+                </div>
+                </div>
+                </div>
+                `;
+                }
+            }
+        }
+
+        // Initialize app
+        const app = new QuizApp();
+        window.app = app; // Make app globally accessible for onclick handlers
+    </script>
 </body>
 </html>
