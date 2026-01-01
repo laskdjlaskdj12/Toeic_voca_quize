@@ -19,101 +19,121 @@
     const quizData = [
         {
             "question": "Two of the applicants were ( ) with a competitor.",
+            "translation": "지원자 중 두명은 경쟁사와 관련되어 있었다.",
             "options": ["associated", "conditions", "employment", "lacked", "managerial"],
             "answer": "associated"
         },
         {
             "question": "The ( ) of employment are listed in the job opening notice.",
+            "translation": "고용 조건들은 채용 공고문에 열거되어 있다.",
             "options": ["associated", "conditions", "employment", "lacked", "managerial"],
             "answer": "conditions"
         },
         {
             "question": "The company announced ( ) opportunities in personnel department.",
+            "translation": "회사는 인사 부서에 고용 기회가 있음을 발표했다.",
             "options": ["associated", "conditions", "employment", "lacked", "managerial"],
             "answer": "employment"
         },
         {
             "question": "Carl ( ) the ability to get along well with his coworkers.",
+            "translation": "Carl은 동료들과 잘 지내는 능력이 없었다.",
             "options": ["associated", "conditions", "employment", "lacked", "managerial"],
             "answer": "lacked"
         },
         {
             "question": "Mike is seeking a ( ) position in the accounting field.",
+            "translation": "Mike는 회계 분야에서 관리직 자리를 찾고 있다.",
             "options": ["associated", "conditions", "employment", "lacked", "managerial"],
             "answer": "managerial"
         },
         {
             "question": "Carmen is one of the most ( ) workers in the company.",
+            "translation": "Carmen은 회사에서 가장 성실한 직원들 중 한 명이다.",
             "options": ["diligent", "familiar", "proficiency", "prospective", "appealed"],
             "answer": "diligent"
         },
         {
             "question": "Staff must review the handbook to become ( ) with it.",
+            "translation": "직원들은 익숙해지도록 안내서를 복습해야한다.",
             "options": ["diligent", "familiar", "proficiency", "prospective", "appealed"],
             "answer": "familiar"
         },
         {
             "question": "Overseas workers need proof of ( ) in a second language.",
+            "translation": "해외근로자들은 외국어 숙달에 관한 증거 자료가 필요하다.",
             "options": ["diligent", "familiar", "proficiency", "prospective", "appealed"],
             "answer": "proficiency"
         },
         {
             "question": "( ) employees were asked to come in for a second interview.",
+            "translation": "장래의 직원들은 2차 면접을 보러 오라고 요청받았다.",
             "options": ["diligent", "familiar", "proficiency", "prospective", "appealed"],
             "answer": "prospective"
         },
         {
             "question": "The 10 percent pay increase ( ) to the staff.",
+            "translation": "10퍼센트 임금 인상은 직원들의 관심을 끌었다.",
             "options": ["diligent", "familiar", "proficiency", "prospective", "appealed"],
             "answer": "appealed"
         },
         {
             "question": "Most of the programmers ( ) in software design in college.",
+            "translation": "대부분의 프로그래머는 대학에서 소프트웨어 디자인을 전공했다.",
             "options": ["specialized", "apprehensive", "consultant", "entitled", "degree"],
             "answer": "specialized"
         },
         {
             "question": "Many people feel ( ) before an important job interview.",
+            "translation": "많은 사람들은 중요한 면접 전에 걱정한다.",
             "options": ["specialized", "apprehensive", "consultant", "entitled", "degree"],
             "answer": "apprehensive"
         },
         {
             "question": "Emma currently works in London as an interior design ( ).",
+            "translation": "Emma는 현재 런던에서 인테리어 디자인 고문으로 일하고 있다.",
             "options": ["specialized", "apprehensive", "consultant", "entitled", "degree"],
             "answer": "consultant"
         },
         {
             "question": "Executives are ( ) to additional benefits.",
+            "translation": "임원들에게는 추가 혜택에 대한 자격이 주어진다.",
             "options": ["specialized", "apprehensive", "consultant", "entitled", "degree"],
             "answer": "entitled"
         },
         {
             "question": "A bachelor's ( ) in engineering is a requirement for this position.",
+            "translation": "공학 학사 학위는 이 직책의 필요조건이다.",
             "options": ["specialized", "apprehensive", "consultant", "entitled", "degree"],
             "answer": "degree"
         },
         {
             "question": "Fifteen new employees were added to the ( ) last month.",
+            "translation": "15명의 신입 사원이 지난달 임금 대장에 추가되었다.",
             "options": ["payroll", "recruits", "certification", "occupation", "wages"],
             "answer": "payroll"
         },
         {
             "question": "The firm ( ) promising graduates on a yearly basis.",
+            "translation": "그 회사는 장래가 촉망되는 졸업자들을 매년 모집한다.",
             "options": ["payroll", "recruits", "certification", "occupation", "wages"],
             "answer": "recruits"
         },
         {
             "question": "Obtaining accounting ( ) takes approximately a year.",
+            "translation": "회계 자격증을 취득하는 데는 대략 1년이 걸린다.",
             "options": ["payroll", "recruits", "certification", "occupation", "wages"],
             "answer": "certification"
         },
         {
             "question": "Journalism is an interesting and challenging ( ).",
+            "translation": "보도직은 흥미로우면서도 도전적인 직업이다.",
             "options": ["payroll", "recruits", "certification", "occupation", "wages"],
             "answer": "occupation"
         },
         {
             "question": "Workers with formal education may earn higher ( ) than those without.",
+            "translation": "정식 교육을 받은 근로자들은 그렇지 않은 사람들보다 더 높은 임금을 받을 수 있다.",
             "options": ["payroll", "recruits", "certification", "occupation", "wages"],
             "answer": "wages"
         }
@@ -186,6 +206,7 @@
                 if (this.userAnswers[i] !== q.answer) {
                     wrong.push({
                         question: q.question,
+                        translation: q.translation,
                         userAnswer: this.userAnswers[i] || '(답안 없음)',
                         correctAnswer: q.answer,
                         index: i
@@ -237,6 +258,9 @@
                 <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <p class="text-lg leading-relaxed" style="font-size: x-large;">
                 ${this.renderQuestion(originalQ)}
+                </p>
+                <p class="text-base leading-relaxed mt-3" style="font-size: large; color: #dc2626;">
+                ${originalQ.translation}
                 </p>
                 </div>
 
@@ -308,8 +332,11 @@
                     const questionWithBlank = w.question.replace('( )', `<span class="inline-block mx-1" style="width: ${blankWidth}rem; border-bottom: 2px solid #333;">&nbsp;</span>`);
                     return `
                                             <div class="mb-6 pb-6 border-b last:border-b-0">
-                                                <p class="text-gray-700 mb-3 leading-relaxed" style="font-size: x-large;">
+                                                <p class="text-gray-700 mb-2 leading-relaxed" style="font-size: x-large;">
                                                     <span class="font-semibold text-blue-600 mr-2">${w.index + 1}.</span>${questionWithBlank}
+                                                </p>
+                                                <p class="text-base leading-relaxed mb-3" style="font-size: large; color: #dc2626;">
+                                                    ${w.translation}
                                                 </p>
                                                 <div class="space-y-2" style="font-size: x-large;">
                                                     <p>

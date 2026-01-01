@@ -19,101 +19,121 @@
     const quizData = [
         {
             "question": "Fax your ( ) and cover letter to the above number.",
+            "translation": "위 번호로 이력서와 자기소개서를 팩스로 보내주세요.",
             "options": ["resume", "openings", "applicants", "requirement"],
             "answer": "resume"
         },
         {
             "question": "There are several job ( ) at the restaurant right now.",
+            "translation": "현재 그 식당에는 일자리가 몇 개 있어요.",
             "options": ["resume", "openings", "applicants", "requirement"],
             "answer": "openings"
         },
         {
             "question": "( ) are required to submit a resume.",
+            "translation": "지원자들은 이력서를 제출해야 한다.",
             "options": ["resume", "openings", "applicants", "requirement"],
             "answer": "applicants"
         },
         {
             "question": "A driver's license is a ( ) of this job.",
+            "translation": "운전면허증은 이 직종의 필요조건이다.",
             "options": ["resume", "openings", "applicants", "requirement"],
             "answer": "requirement"
         },
         {
             "question": "Applicants must ( ) all the requirements for the job.",
+            "translation": "지원자들은 그 직종에서 모든 조건을 만족시켜야한다.",
             "options": ["meet", "qualified", "candidates", "confidence"],
             "answer": "meet"
         },
         {
             "question": "People with master's degrees are ( ) for the research position.",
+            "translation": "석사학위를 가진 사람들은 그 연구직에 자격이 있다.",
             "options": ["meet", "qualified", "candidates", "confidence"],
             "answer": "qualified"
         },
         {
             "question": "Five ( ) will be selected for final interviews.",
+            "translation": "5명의 후보자가 최종면접을 위해 선출될 것이다.",
             "options": ["meet", "qualified", "candidates", "confidence"],
             "answer": "candidates"
         },
         {
             "question": "We have ( ) that she can handle the position.",
+            "translation": "우리는 그녀가 그 직책을 수행할 수 있다고 확신한다.",
             "options": ["meet", "qualified", "candidates", "confidence"],
             "answer": "confidence"
         },
         {
             "question": "Mr. Monroe's experience makes him ( ) qualified for the job.",
+            "translation": "Mr Monroe's의 경험이 그를 그 직업에 매우 자격이 있게 한다.",
             "options": ["highly", "professional", "interviews", "hire"],
             "answer": "highly"
         },
         {
             "question": "Jeff is known as a ( ) photographer.",
+            "translation": "Jeff는 전문 사진가로 알려져 있다.",
             "options": ["highly", "professional", "interviews", "hire"],
             "answer": "professional"
         },
         {
             "question": "The ( ) are being held in meeting room three.",
+            "translation": "면접은 3번 회의실에서 이루어지고 있다.",
             "options": ["highly", "professional", "interviews", "hire"],
             "answer": "interviews"
         },
         {
             "question": "The company expects to ( ) several new employees next month.",
+            "translation": "회사는 다음 달에 신입사원 몇 명을 고용할 계획이다.",
             "options": ["highly", "professional", "interviews", "hire"],
             "answer": "hire"
         },
         {
             "question": "This company offers on-the-job ( ) for new staff.",
+            "translation": "이 회사는 신입 사원들을 위한 현장 교육을 제공한다.",
             "options": ["training", "reference", "position", "positioned"],
             "answer": "training"
         },
         {
             "question": "Philip asked his previous employer to write a ( ) letter for him.",
+            "translation": "Philip은 그의 이전 고용주에게 추천서를 써 달라고 부탁했다.",
             "options": ["training", "reference", "position", "positioned"],
             "answer": "reference"
         },
         {
-            "question": "The ( ) provides health care and other benefits.",
+            "question": "The ( ) position provides health care and other benefits.",
+            "translation": "광고된 일자리는 의료 서비스와 다른 혜택을 제공한다.",
             "options": ["training", "reference", "position", "positioned"],
             "answer": "position"
         },
         {
             "question": "List all of your ( ) from previous jobs on your resume.",
+            "translation": "이전 직장에서 이룬 모든 성취 사항들을 이력서에 기록하시오.",
             "options": ["achievements", "impressed", "excellent", "eligible"],
             "answer": "achievements"
         },
         {
             "question": "The CEO was ( ) by his assistant's organizing skills.",
+            "translation": "그 최고 경영자는 비서의 정리 능력을 인상 깊게 생각했다.",
             "options": ["achievements", "impressed", "excellent", "eligible"],
             "answer": "impressed"
         },
         {
             "question": "Because of her ( ) managerial skills, Erin was hired for the job.",
+            "translation": "그녀의 훌륭한 관리 능력 때문에, Erin은 그 일자리에 채용되었다.",
             "options": ["achievements", "impressed", "excellent", "eligible"],
             "answer": "excellent"
         },
         {
             "question": "The part-time workers are also ( ) for paid holidays.",
+            "translation": "시간제 근로자들도 유급 휴가를 받을 자격이 있다.",
             "options": ["achievements", "impressed", "excellent", "eligible"],
             "answer": "eligible"
         },
         {
             "question": "Staff members wear uniforms so that they are easy for customers to ( ).",
+            "translation": "직원들은 손님들이 쉽게 알아볼 수 있도록 제복을 입는다.",
             "options": ["achievements", "impressed", "excellent", "eligible", "identify"],
             "answer": "identify"
         }
@@ -186,6 +206,7 @@
                 if (this.userAnswers[i] !== q.answer) {
                     wrong.push({
                         question: q.question,
+                        translation: q.translation,
                         userAnswer: this.userAnswers[i] || '(답안 없음)',
                         correctAnswer: q.answer,
                         index: i
@@ -237,6 +258,9 @@
                 <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <p class="text-lg leading-relaxed" style="font-size: x-large;">
                 ${this.renderQuestion(originalQ)}
+                </p>
+                <p class="text-base leading-relaxed mt-3" style="font-size: large; color: #dc2626;">
+                ${originalQ.translation}
                 </p>
                 </div>
 
@@ -308,8 +332,11 @@
                     const questionWithBlank = w.question.replace('( )', `<span class="inline-block mx-1" style="width: ${blankWidth}rem; border-bottom: 2px solid #333;">&nbsp;</span>`);
                     return `
                                             <div class="mb-6 pb-6 border-b last:border-b-0">
-                                                <p class="text-gray-700 mb-3 leading-relaxed" style="font-size: x-large;">
+                                                <p class="text-gray-700 mb-2 leading-relaxed" style="font-size: x-large;">
                                                     <span class="font-semibold text-blue-600 mr-2">${w.index + 1}.</span>${questionWithBlank}
+                                                </p>
+                                                <p class="text-base leading-relaxed mb-3" style="font-size: large; color: #dc2626;">
+                                                    ${w.translation}
                                                 </p>
                                                 <div class="space-y-2" style="font-size: x-large;">
                                                     <p>
